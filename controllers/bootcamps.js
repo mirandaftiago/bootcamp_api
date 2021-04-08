@@ -16,11 +16,6 @@ exports.getBootcamps = async (req, res, next) => {
       success: false
     })
   }
-
-  res.status(200).json({
-    success: true,
-    message: 'Show all bootcamps',
-    });
 }
 
 // @desc      Get single bootcamps
