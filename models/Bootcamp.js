@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const bootcampSchema = new.mongoose.Schema({
+const bootcampSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Please add a name'],
@@ -53,7 +53,7 @@ const bootcampSchema = new.mongoose.Schema({
     city: String,
     state: String,
     zipcode: String,
-    country: Strin
+    country: String
   },
   careers: {
     //Array of strings
