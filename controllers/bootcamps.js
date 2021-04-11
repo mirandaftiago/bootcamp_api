@@ -42,11 +42,6 @@ exports.getBootcamp = async (req, res, next) => {
       success: false
     });
   }
-
-  res.status(200).json({
-    success: true,
-    message: `Show bootcamp with ID ${req.params.id}`
-  });
 }
 
 // @desc      Create new bootcamp
