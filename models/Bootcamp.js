@@ -98,17 +98,26 @@ const bootcampSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+}, {
+  toJSON: {
+    virtuals: true
+  },
+  toObject: {
+    virtuals: true
+  }
 });
 
 //Create bootcamp slug from the name
 bootcampSchema.pre('save', function (next) {
-  this.slug = slugify(this.name, { lower: true });
+  this.slug = slugify(this.name, {
+    lower: true
+  });
   next();
 });
 
 //Geocode & create location field
 //https://github.com/nchaulet/node-geocoder#readme
-bootcampSchema.pre('save', async function(next) {
+bootcampSchema.pre('save', async function (next) {
   const loc = await geocoder.geocode(this.address);
   this.location = {
     type: 'Point',
@@ -124,6 +133,14 @@ bootcampSchema.pre('save', async function(next) {
   //Do not save address on DB
   this.address = undefined;
   next();
+});
+
+//Reverse populate with virtuals
+bootcampSchema.virtual('courses', {
+  ref: 'Course',
+  localField: '_id',
+  foreignField: 'bootcamp',
+  justOne: false
 });
 
 module.exports = mongoose.model('Bootcamp', bootcampSchema);
