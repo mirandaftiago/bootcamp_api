@@ -16,6 +16,8 @@ const courseRouter = require('./courses');
 
 const router = express.Router();
 
+const advancedResults = require('../middleware/advancedResults');
+
 //Re-route into another resource routers
 router
   .use('/:bootcampId/courses', courseRouter);
@@ -30,7 +32,7 @@ router
 
 router
   .route('/')
-  .get(getBootcamps)
+  .get(advancedResults(Bootcamp, 'courses'), getBootcamps)
   .post(createBootcamp);
 
 router
