@@ -97,6 +97,11 @@ const bootcampSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true
   }
 }, {
   toJSON: {
@@ -138,7 +143,9 @@ bootcampSchema.pre('save', async function (next) {
 //Cascade delete courses when a bootcamp is deleted
 bootcampSchema.pre('remove', async function (next) {
   console.log(`Courses being removed from bootcamp ${this._id}`);
-  await this.model('Course').deleteMany({ bootcamp: this._id });
+  await this.model('Course').deleteMany({
+    bootcamp: this._id
+  });
   next();
 });
 

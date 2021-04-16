@@ -32,6 +32,19 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.createBootcamp = asyncHandler(async (req, res, next) => {
 
+  //Add user to req.body
+  req.body.user = req.user.id;
+
+  //Check for published bootcamp
+  const publishedBootcamp = await Bootcamp.findOne({
+    user: req.user.id
+  });
+
+  //If the user is not admin, only add one bootcamp
+  if (publishedBootcamp && req.user.role !== 'admin') {
+    return next(new ErrorResponse(`The user with ID ${req.user.id} has already published a bootcamp`, 400));
+  }
+
   const bootcamp = await Bootcamp.create(req.body);
 
   res.status(201).json({
@@ -151,7 +164,9 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
       console.error(err);
       return next(new ErrorResponse(`Problem with file upload`, 500));
     }
-    await Bootcamp.findByIdAndUpdate(req.params.id, { photo: file.name });
+    await Bootcamp.findByIdAndUpdate(req.params.id, {
+      photo: file.name
+    });
 
     res.status(200).json({
       success: true,
