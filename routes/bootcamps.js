@@ -16,9 +16,8 @@ const courseRouter = require('./courses');
 
 const router = express.Router();
 
-const { protect,authorize } = require('../middleware/auth');
-
 const advancedResults = require('../middleware/advancedResults');
+const { protect,authorize } = require('../middleware/auth');
 
 //Re-route into another resource routers
 router
